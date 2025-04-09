@@ -10,14 +10,30 @@
             overflow: hidden;
             white-space: nowrap;
         }
+        
+
+        .month_link {
+            float: right;
+        }
 
     </style>
     <a href="{% url 'app:week_with_schedule' month_current.year month_current.month now.day %}">週表示に切り替え</a>
-    <br>
-    <a href="{% url 'app:month_with_schedule' month_prev_year.year month_current.month %}">前年</a>
-    {{ month_current | date:"Y年m月" }}
-    <a href="{% url 'app:month_with_schedule' month_next_year.year month_current.month %}">来年</a>
-    <br>
+    <div>
+        <span>
+            <a href="{% url 'app:month_with_schedule' month_prev_year.year month_current.month %}">前年</a>
+            {{ month_current | date:"Y年m月" }}
+            <a href="{% url 'app:month_with_schedule' month_next_year.year month_current.month %}">来年</a>
+        </span>
+        <span class="month_link">
+            {% for month_num in month_numbers %}
+                <a href="{% url 'app:month_with_schedule' month_current.year month_num %}"
+                    {% if month_current.month == month_num %}style="font-weight: bold;"{% endif %}>
+                    {{ month_num }}月
+                </a>
+                {% if not forloop.last %} | {% endif %} {# 月の間に区切り文字を追加 #}
+            {% endfor %}
+        </span>
+    </div>
 
     <table class="table">
         <thead>
