@@ -76,10 +76,15 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ViZaro',  # 使用するデータベース名
+        'USER': 'postgres',  # データベースユーザー名
+        'PASSWORD': 'postgres',  # データベースパスワード
+        'HOST': 'localhost',  # ホスト名（通常はlocalhost）
+        'PORT': '5432',  # PostgreSQLのポート（デフォルトは5432）
     }
 }
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Password validation
