@@ -1,10 +1,10 @@
 {% load app_tags %}
 
-<a href="{% url 'app:week' week_previous.year week_previous.month  week_previous.day %}">前週</a>
+<a href="{% url 'app:mycalendar' week_previous.year week_previous.month  week_previous.day %}">前週</a>
 {{ week_first | date:"Y年m月d日" }}〜{{ week_last | date:"Y年m月d日" }}
-<a href="{% url 'app:week' week_next.year week_next.month  week_next.day %}">次週</a>
+<a href="{% url 'app:mycalendar' week_next.year week_next.month  week_next.day %}">次週</a>
 
-<table>
+<table class="table table-bordered">
     <tbody>
     <tr>
         {% for day in week_days %}
