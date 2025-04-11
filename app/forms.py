@@ -19,6 +19,7 @@ class BS4ScheduleForm(forms.ModelForm):
             'start_date': forms.DateInput(attrs={
                 'class': 'form-control',
                 'type': 'date',
+                'readonly': 'readonly',
             }),
             'end_date': forms.DateInput(attrs={
                 'class': 'form-control',
@@ -26,7 +27,6 @@ class BS4ScheduleForm(forms.ModelForm):
             }),
             'start_time': forms.TextInput(attrs={
                 'class': 'form-control',
-                'readonly': 'readonly',
             }),
             'end_time': forms.TextInput(attrs={
                 'class': 'form-control',
