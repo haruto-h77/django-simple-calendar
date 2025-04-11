@@ -1,42 +1,43 @@
 {% extends 'app/base.html' %}
 {% block content %}
-<a href="{% url 'app:week_with_schedule' month_current.year month_current.month now.day %}">週表示に切り替え</a>
-<span>|</span>
-<a href="{% url 'app:month_with_schedule' month_current.year month_current.month %}">月表示に切り替え</a>
+    <a href="{% url 'app:week_with_schedule' month_current.year month_current.month now.day %}">週表示に切り替え</a>
+    <span>|</span>
+    <a href="{% url 'app:month_with_schedule' month_current.year month_current.month %}">月表示に切り替え</a>
 
-<div class="container mt-3">
-    <div class="row">
-        <!-- 左側：カレンダー（月） -->
-        <div class="col-md-4">
-            <div class="d-flex flex-column align-items-start">
-                <div class="w-100">
-                    {% include 'app/includes/month.html' %}
-                </div>            
-                <hr class="w-100">
+    <div class="container mt-3">
+        <div class="row">
+            <!-- 左側：カレンダー（月） -->
+            <div class="col-md-4">
+                <div class="d-flex flex-column align-items-start">
+                    <div class="w-100">
+                        {% include 'app/includes/month.html' %}
+                    </div>            
+                    <hr class="w-100">
+                </div>
+            </div>
+
+            <!-- 右側：フォーム -->
+            <div class="col-md-6 offset-md-1" style="margin-top: 36px;">
+                <form action="" method="POST">
+                    {{ form.non_field_errors }}
+                    {% for field in form %}
+                        <div class="form-group row {% if field.errors %}field-error{% endif %}">
+                            <label for="{{ field.id_for_label }}" class="col-sm-4 col-form-label">
+                                {{ field.label_tag }}
+                            </label>
+                            <div class="col-sm-8">
+                                {{ field }}
+                                {{ field.errors }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-block">送信</button>
+                </form>
             </div>
         </div>
-
-        <!-- 右側：フォーム -->
-        <div class="col-md-6 offset-md-1" style="margin-top: 36px;">
-            <form action="" method="POST">
-                {{ form.non_field_errors }}
-                {% for field in form %}
-                    <div class="form-group row {% if field.errors %}field-error{% endif %}">
-                        <label for="{{ field.id_for_label }}" class="col-sm-4 col-form-label">{{ field.label_tag }}</label>
-                        <div class="col-sm-8">
-                            {{ field }}
-                            {{ field.errors }}
-                        </div>
-                    </div>
-                {% endfor %}
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-block">送信</button>
-            </form>
-        </div>
     </div>
-</div>
 {% endblock %}
-
 
 {% block extrajs %}
     <style>
