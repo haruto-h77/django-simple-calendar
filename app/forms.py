@@ -44,10 +44,20 @@ class BS4ScheduleForm(forms.ModelForm):
     # 各フィールドに対してのバリデーション確認
     def clean(self):
         cleaned_data = super().clean()
+        summary = cleaned_data.get('summary')
+        description = cleaned_data.get('description')
         start_date = cleaned_data.get('start_date')
         end_date = cleaned_data.get('end_date')
         start_time = cleaned_data.get('start_time')
         end_time = cleaned_data.get('end_time')
+
+        # summaryの文字数チェック
+        if summary and len(summary) > 50:
+            self.add_error('summary', '1文字以上、50文字以内で入力してください')
+
+        # descriptionの文字数チェック
+        if description and len(description) > 200:
+            self.add_error('description', '200文字以内で入力してください')
 
         # どれかの日時が未入力の場合
         if None in (start_date, end_date, start_time, end_time):
