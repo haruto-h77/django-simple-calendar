@@ -10,7 +10,7 @@
             <form action="" method="POST">
                 {{ form.non_field_errors }}
                 {% for field in form %}
-                    <div class="form-group row">
+                    <div class="form-group row {% if field.errors %}field-error{% endif %}">
                         <label for="{{ field.id_for_label }}"
                                class="col-sm-4 col-form-label">{{ field.label_tag }}</label>
                         <div class="col-sm-8">
@@ -31,6 +31,19 @@
 
 
 {% block extrajs %}
+    <style>
+        .field-error input,
+        .field-error select,
+        .field-error textarea {
+            border-color: red;
+        }
+
+        .field-error .errorlist {
+            color: red;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+        }
+    </style>
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.js"></script>
