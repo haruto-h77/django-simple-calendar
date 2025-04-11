@@ -6,6 +6,7 @@ from django.views import generic
 from .forms import BS4ScheduleForm, SimpleScheduleForm
 from .models import Schedule
 from . import mixins
+from django.urls import reverse
 
 class MonthCalendar(mixins.MonthCalendarMixin, generic.TemplateView):
     """月間カレンダーを表示するビュー"""
@@ -126,7 +127,8 @@ class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generi
             )
             schedule.save()
             current_date += timedelta(days=1)  # 1日ずつ増加
-        return redirect('app:mycalendar', year=start_date.year, month=start_date.month, day=start_date.day)
+        # 月間カレンダーへリダイレクト
+        return redirect(reverse('app:month_with_schedule', args=[start_date.year, start_date.month]))
 
 
 class MonthWithFormsCalendar(mixins.MonthWithFormsMixin, generic.View):
