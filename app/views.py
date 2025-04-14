@@ -7,6 +7,7 @@ from .forms import BS4ScheduleForm, SimpleScheduleForm
 from .models import Schedule
 from . import mixins
 from django.urls import reverse
+from datetime import timedelta, time
 
 class MonthCalendar(mixins.MonthCalendarMixin, generic.TemplateView):
     """月間カレンダーを表示するビュー"""
@@ -113,21 +114,38 @@ class MyCalendar(mixins.MonthCalendarMixin, mixins.WeekWithScheduleMixin, generi
         end_date = form.cleaned_data['end_date']
         summary = form.cleaned_data['summary']
         description = form.cleaned_data['description']
+        orig_start_time = form.cleaned_data['start_time']
+        orig_end_time = form.cleaned_data['end_time']
 
-        # 日付が一致する場合（単一日付の場合）も考慮して、開始日から終了日までの間の日を登録
         current_date = start_date
+
         while current_date <= end_date:
-            # 毎回新しいScheduleインスタンスを作成
+            # 日ごとの時間を決定（元の時間を保持しておく）
+            if current_date == start_date and current_date == end_date:
+                daily_start = orig_start_time
+                daily_end = orig_end_time
+            elif current_date == start_date:
+                daily_start = orig_start_time
+                daily_end = time(23, 59, 59)
+            elif current_date == end_date:
+                daily_start = time(0, 0, 0)
+                daily_end = orig_end_time
+            else:
+                daily_start = time(0, 0, 0)
+                daily_end = time(23, 59, 59)
+
             schedule = Schedule(
                 summary=summary,
                 description=description,
                 date=current_date,
                 start_date=start_date,
                 end_date=end_date,
+                start_time=daily_start,
+                end_time=daily_end,
             )
             schedule.save()
-            current_date += timedelta(days=1)  # 1日ずつ増加
-        # 月間カレンダーへリダイレクト
+            current_date += timedelta(days=1)
+
         return redirect(reverse('app:month_with_schedule', args=[start_date.year, start_date.month]))
 
 
